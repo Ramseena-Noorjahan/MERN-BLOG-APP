@@ -1,35 +1,69 @@
-import React from 'react'
-import PostAuthor from "../Components/PostAuthor"
-import {Link} from "react-router-dom"
-import Thumbnail from "../Images/blog2.jpg"
+import React, { useContext, useEffect, useState } from "react";
+import PostAuthor from "../Components/PostAuthor";
+import { Link, useParams } from "react-router-dom";
+import { UserContext } from "../context/userContext";
+import Loader from "../Components/Loader";
+import DeletePost from "../pages/DeletePost";
+import axios from "axios";
+
 // start
 const PostDetails = () => {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const getPost = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/posts/${id}`
+        );
+        setPost(response?.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
+
+    getPost();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <section className='post_details'>
-    <div className='container post-details__container'>
-    <div className="post-detail_header">
-      <PostAuthor/>
-      <div className="post-details__buttons">
-      <Link to={'/posts/werwer/edit'} className='btn sm primary'>Edit</Link>
-      <Link to={'/posts/werwer/delete'} className='btn sm primary'>Delete</Link>
-      </div>
-    </div>
-    <h1>this is the post title</h1>
-    <div className="post-detail__thumbnail">
-     <img src={Thumbnail} alt="" />
-    </div>
-    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",
-</p>
-<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",
-</p>
-<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",
-</p>
-    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. ",
-</p>
-    </div>
+    <section className="post_details">
+      {error && <p className="error">{error}</p>}
+      {post && (
+        <div className="container post-details__container">
+          <div className="post-detail_header">
+            <PostAuthor authorID={post?.creator} createdAt={post?.createdAt} />
+            {currentUser?.id == post?.creator && (
+              <div className="post-details__buttons">
+                <Link to={`/posts/${post?._id}/edit`} className="btn sm primary">
+                  Edit
+                </Link>
+                <DeletePost postId={id} />
+              </div>
+            )}
+          </div>
+          <h1>{post?.title}</h1>
+          <div className="post-detail__thumbnail">
+            <img
+              src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post?.thumbnail}`}
+              alt="post thumbnail"
+            />
+          </div>
+          <p dangerouslySetInnerHTML={{ __html: post?.description }}></p>
+        </div>
+      )}
     </section>
-  )
-}
+  );
+};
 //stop
 
-export default PostDetails
+export default PostDetails;

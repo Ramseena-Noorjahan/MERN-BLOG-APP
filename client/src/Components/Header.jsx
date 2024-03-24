@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../Images/blog14.jpg";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+
+import { UserContext } from "../context/userContext";
+
 //start
 const Header = () => {
-  const [isNavShowing,setIsNavShowing] = useState(window.innerWidth > 800 ? true:false )
-  const closeNavHandler  =()=>{
-    if(window.innerHeight <800){
-      setIsNavShowing(false)
-    }else{
-      setIsNavShowing(true)
+  const [isNavShowing, setIsNavShowing] = useState(
+    window.innerWidth > 800 ? true : false
+  );
+  const { currentUser } = useContext(UserContext);
+
+  const closeNavHandler = () => {
+    if (window.innerHeight < 800) {
+      setIsNavShowing(false);
+    } else {
+      setIsNavShowing(true);
     }
-  }
+  };
   return (
     <nav>
       <div className="container nav__container">
@@ -20,27 +27,55 @@ const Header = () => {
           <img src={Logo} alt="navbar"></img>
         </Link>
 
-      {isNavShowing && <ul className="nav__menu">
+        {currentUser?.id && isNavShowing && (
+          <ul className="nav__menu">
             <li>
-              <Link to="/profile/sdfsdf" onClick={closeNavHandler}> ErnestAchiever</Link>
+              <Link to={`/profile/${currentUser.id}`} onClick={closeNavHandler}>
+                {currentUser?.name}
+              </Link>
             </li>
             <li>
-              <Link to="/create" onClick={closeNavHandler}> CreatePost</Link>
+              <Link to="/create" onClick={closeNavHandler}>
+                {" "}
+                CreatePost
+              </Link>
             </li>
             <li>
-              <Link to="/authors" onClick={closeNavHandler}> Authors</Link>
+              <Link to="/authors" onClick={closeNavHandler}>
+                {" "}
+                Authors
+              </Link>
             </li>
             <li>
-              <Link to="/logout" onClick={closeNavHandler}>Logout</Link>
+              <Link to="/logout" onClick={closeNavHandler}>
+                Logout
+              </Link>
             </li>
-            
-          </ul>}    
-          <button className="nav__toggle-btn " onClick={()=>{
-            setIsNavShowing(!isNavShowing)
-          }}>
-            
-              {isNavShowing ?   <AiOutlineClose/> :<FaBars/> }
-            </button>
+          </ul>
+        )}
+        {!currentUser?.id && isNavShowing && (
+          <ul className="nav__menu">
+            <li>
+              <Link to="/authors" onClick={closeNavHandler}>
+                {" "}
+                Authors
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" onClick={closeNavHandler}>
+                Login
+              </Link>
+            </li>
+          </ul>
+        )}
+        <button
+          className="nav__toggle-btn "
+          onClick={() => {
+            setIsNavShowing(!isNavShowing);
+          }}
+        >
+          {isNavShowing ? <AiOutlineClose /> : <FaBars />}
+        </button>
       </div>
     </nav>
   );

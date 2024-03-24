@@ -197,7 +197,7 @@ const changeAvatar = async(req,res,next) => {
 const editUser = async(req,res,next) => {
  try { 
   console.log("reached")
-  const {name,email,currentPassword,newPassword,newConfirmNewPassword} = req.body
+  const {name,email,currentPassword,newPassword,confirmNewPassword} = req.body
   if(!name || !email || !currentPassword || !newPassword){
     return next(new HttpError("Fill in all fields.",422))
   }
@@ -223,7 +223,7 @@ const editUser = async(req,res,next) => {
   }
 
  //compare new password
- if(newPassword !== newConfirmNewPassword){
+ if(newPassword !== confirmNewPassword){
   return next (new HttpError("New password do not match.",422))
  }
 
@@ -257,7 +257,7 @@ res.status(200).json(newInfo)
 //PROTECTED
 const getAuthors = async(req,res,next) => {
    try {
-    const athors = await User.find().select('-password')
+    const authors = await User.find().select('-password')
     res.json(authors)
     
    } catch (error) {

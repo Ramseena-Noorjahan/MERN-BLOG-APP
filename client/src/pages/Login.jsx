@@ -57,7 +57,7 @@ const Login = () => {
             onChange={changeInputHandler}
           />
           <button type="submit" className="btn primary">
-            Register
+            Login
           </button>
         </form>
         <small>

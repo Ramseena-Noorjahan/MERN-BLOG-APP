@@ -242,7 +242,7 @@ footer{
 .post__footer{
     display: flex;
     justify-content: space-between;
-    justify-content: flex-end;
+    align-items: center;
     margin-top: 2rem;
 }
 .post__author{
@@ -301,8 +301,8 @@ footer{
 
 input,select,textarea {
     width: 100%;
-    padding:0.6rem, 1rem ;
-    border-radius: var(--radius-1);
+    padding: 0.6rem 1rem ;
+    border-radius: 0.3rem;
     resize: none;
 }
 
@@ -475,6 +475,37 @@ register small a, .login small a {
     display: flex;
     gap:1rem;
 }
+
+
+
+
+
+/* =======================================Loader============================================ */
+
+
+.loader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    background: var(--color-bg);
+}
+
+.loader__image{
+    width: 4.5rem;
+    aspect-ratio: 1/1;
+}
+
+
+
+
+
+
+
+
 
 /*.....................................Media Queries (small devices)..................................*/
 

@@ -1,26 +1,68 @@
-import React, { useState} from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader";
 
-import thumbnail1 from "../Images/thumbnail.jpg";
 import { Postitem } from "./Postitem";
-import {DUMMY_POSTS} from "../data"
+
 //start
 
 const Posts = () => {
-    const [posts,setPosts] = useState(DUMMY_POSTS)
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/posts`
+        );
+        setPosts(response?.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <section className="posts">
-      {posts.length > 0?<div className="container post__container">
-        {
-            posts.map(({id,title,thumbnail,category,desc,authorid})=>
-             <Postitem key={id} postID={id} thumbnail={thumbnail} category={category} title={title} description={desc} authorid={authorid}/>
-
+      {posts.length > 0 ? (
+        <div className="container post__container">
+          {posts.map(
+            ({
+              _id:id,
+              title,
+              thumbnail,
+              category,
+              description,
+              creator,
+              createdAt,
+            }) => (
+              <Postitem
+                key={id}
+                postID={id}
+                thumbnail={thumbnail}
+                category={category}
+                title={title}
+                description={description}
+                authorid={creator}
+                createdAt={createdAt}
+              />
             )
-        }
-        </div>: <h2 className="center">No Posts Found</h2>}
-
+          )}
+        </div>
+      ) : (
+        <h2 className="center">No Posts Found</h2>
+      )}
     </section>
-  )
-
+  );
 };
 //stop
 
