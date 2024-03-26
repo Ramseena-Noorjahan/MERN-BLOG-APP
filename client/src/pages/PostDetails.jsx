@@ -40,7 +40,7 @@ const PostDetails = () => {
       {error && <p className="error">{error}</p>}
       {post && (
         <div className="container post-details__container">
-          <div className="post-detail_header">
+          <div className="post-detail__header">
             <PostAuthor authorID={post?.creator} createdAt={post?.createdAt} />
             {currentUser?.id == post?.creator && (
               <div className="post-details__buttons">
