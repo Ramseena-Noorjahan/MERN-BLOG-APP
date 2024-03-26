@@ -141,19 +141,19 @@ const UserProfile = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
-              type="text"
+              type="password "
               placeholder="currentPassword"
               value={currentPassword}
               onChange={(e) => setcurrentPassword(e.target.value)}
             />
             <input
-              type="text"
+              type="password"
               placeholder="newPassword"
               value={newPassword}
               onChange={(e) => setnewPassword(e.target.value)}
             />
             <input
-              type="text"
+              type="password"
               placeholder="confirmNewPassword"
               value={confirmNewPassword}
               onChange={(e) => setconNewfirmPassword(e.target.value)}

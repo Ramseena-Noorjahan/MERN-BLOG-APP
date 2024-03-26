@@ -43,8 +43,8 @@ const Register = () => {
          { error &&<p className="form_error-message">{error}</p>}
           <input type="text" placeholder='Full Name' name="name" value={userData.name} onChange={changeInputHandler} />
           <input type="text" placeholder='Email' name="email" value={userData.email} onChange={changeInputHandler} />
-          <input type="text" placeholder='Password' name="password" value={userData.password} onChange={changeInputHandler} />
-          <input type="text" placeholder='Confirm password' name="confirmpassword" value={userData.confirmpassword} onChange={changeInputHandler} />
+          <input type="password" placeholder='Password' name="password" value={userData.password} onChange={changeInputHandler} />
+          <input type="password" placeholder='Confirm password' name="confirmpassword" value={userData.confirmpassword} onChange={changeInputHandler} />
           <button type='submit' className='btn primary'>Register</button>
         </form>
         <small>Already have an account? <Link to="/login">sign in</Link></small>

@@ -14,7 +14,7 @@ const Header = () => {
   const { currentUser } = useContext(UserContext);
 
   const closeNavHandler = () => {
-    if (window.innerHeight < 800) {
+    if (window.innerWidth < 800) {
       setIsNavShowing(false);
     } else {
       setIsNavShowing(true);
